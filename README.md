@@ -1,5 +1,5 @@
 # expenses
-A simple web app for tracking expenses. See it [running live](192.81.130.206). 
+A simple web app for tracking expenses. See it [running live](https://192.81.130.206). 
 
 It is using a self-signed SSL certificate, so it's pretty likely to throw warnings in your browser. Just ignore them ;)
 
