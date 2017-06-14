@@ -1,0 +1,37 @@
+html
+  head
+    title= "Expenses"
+    link(rel='stylesheet', href='/css/style.css')
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js")
+  body
+    div(class='topbox')
+      h1= header
+      script(type="text/javascript")= myname
+    div(class='tools')
+      div(class='container')
+        h3(id="fileinstructions", class="tool")="Submit an expense"
+        p(class="tool")="Date/Time"
+        input(id="date", type="date", name="timestamp", class="tool")
+        p(class="tool")="Amount(USD)"
+        input(id="amount", type="number", name="amount", class="tool")
+        p(class="tool")="Description"
+        input(id="description", type="text", name="description", class="tool")
+        <br>
+        button(type="button", id="filebutton", class="submit")="Submit"
+        button(type="button", id="filecancel", class="cancel")="Cancel"
+      div(class='container')
+        h3(id="reportinstructions", class="tool")="Filter View"
+        p(class="tool")="Start Date"
+        input(id="start_date", type="date", name="start", class="tool")
+        p(class="tool")="End Date"
+        input(id="end_date", type="date", name="end", class="tool")
+        p(class="tool")="All Expenses"
+        input(id="all_expenses", type="checkbox", name="all", class="tool")
+        <br>
+        button(type="button", id="reportbutton", class="submit")="Submit"
+        button(type="button", id="reportcancel", class="cancel")="Clear"
+      div(id="report", class="report")
+      div(id="allexpenses", class="report")
+  script(src="https://d3js.org/d3.v4.min.js")
+
+  script(src="/js/app.js")

@@ -1,0 +1,82 @@
+body {
+  font-size: 20px;
+  font-family: sans-serif;
+}
+
+h1 {
+  color: white;
+}
+
+p {
+  font-size: 14px;
+  margin: 2px;
+}
+
+h3 {
+  font-size: 18px;
+  margin: 2px;
+}
+
+.topbox {
+  height: 100px;
+  text-align: center;
+  background-color: #009900;
+  padding: 16px;
+  margin: 0px;
+}
+
+.container {
+  width: 99%;
+  border: 1px solid black;
+  border-radius: 2px;
+  padding: 4px;
+  margin-top: 2px;
+  display: flex;
+  height: 40px;
+}
+
+.tool {
+  margin-right: 5px;
+}
+
+.tools {
+  width: 100%;
+}
+
+.login {
+  width: 200px;
+  height: 300px;
+  border: 1px solid black;
+  border-radius: 2px;
+  text-align: center;
+  padding: 2px;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 20px;
+}
+
+.submit {
+  background: blue;
+  color: white;
+  font-size: 20px;
+  border: none;
+  border-radius: 2px;
+  margin: 4px;
+}
+
+.cancel {
+  font-size: 20px;
+  border: none;
+  border-radius: 2px;
+  margin: 4px;
+}
+
+.report {
+  padding: 2px;
+  text-align: center;
+}
+
+.edit {
+  border: none;
+  border-radius: 2px;
+}
