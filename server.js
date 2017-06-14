@@ -5,13 +5,21 @@ const session = require('express-session');
 const bodyParser = require('body-parser')
 const path = require('path')
 const fs = require('fs')
-
 var https = require('https');
+
 // Setup HTTPS
 var options = {
   key: fs.readFileSync(path.join(__dirname, "certs", "key.key")),
   cert: fs.readFileSync(path.join(__dirname, "certs", "cert.crt"))
 };
+
+var http = express();
+
+// set up a route to redirect http to https
+http.get('*',function(req,res){
+    res.redirect('192.81.130.206'+req.url)
+})
+
 
 const app = express()
 
@@ -133,4 +141,5 @@ app.delete("/expenses", restrict, (req, res)=>{
   })
 })
 
-var secureServer = https.createServer(options, app).listen(443);
+https.createServer(options, app).listen(443);
+http.listen(80);
