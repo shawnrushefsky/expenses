@@ -92,6 +92,8 @@ app.get("/", (req, res)=>{
   res.render('login', {
     action: '/login',
     prompt: "Log in to your account",
+    username: "Username",
+    password: "Password",
     adminlabel: "",
     check: true,
     msg: "Create a free account"})
@@ -101,6 +103,8 @@ app.get("/createaccount", (req, res)=>{
   res.render('login', {
     action: '/newuser',
     prompt: "Create a new account",
+    username: "Username (must be at least 5 characters)",
+    password: "Password (must be at least 8 characters and contain a number)",
     adminlabel: "Admin Account",
     check: false,
     msg: ""
