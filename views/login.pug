@@ -8,9 +8,9 @@ html
     div(class='login')
       form(action=action, method="POST")
         h3= prompt
-        p= "Username"
+        p= "Username (must be at least 5 characters)"
         input(type="text", name="username")
-        p= "Password"
+        p= "Password (must be at least 8 characters and contain a number)"
         input(type="password", name="pw")
         p= adminlabel
         input(type="checkbox", name="admin", disabled=check)
