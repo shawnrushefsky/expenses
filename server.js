@@ -29,6 +29,7 @@ app.use(bodyParser())
 app.use(session({secret: 'ssshhhhh'}))
 app.set('view engine', 'pug')
 
+// Sets up the user's session after a successful login
 var loggedIn = function(req, res, username){
   req.session.regenerate(function(){
     req.session.user = username
@@ -70,6 +71,8 @@ app.post("/login", (req, res)=>{
   });
 })
 
+// A middleware layer that restricts access to users who have not been granted
+// a session by logging in
 function restrict(req, res, next) {
   if (req.session.user) {
     next();

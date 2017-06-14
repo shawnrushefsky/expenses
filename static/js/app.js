@@ -19,6 +19,8 @@ var currentData = {}
 var editID;
 var weekfactor = (1000*60*60*24*7)
 
+// Takes a date object, and returns a string yyyy-mm-dd, in compliance with the
+// html input.date object.
 function formatDate(date){
   var yr = date.getFullYear()
   var mnth = date.getMonth()+1
@@ -32,22 +34,19 @@ function formatDate(date){
   return yr+"-"+mnth+"-"+day
 }
 
+
 function setDefaultDates(){
   var currentDate = new Date()
   var oneWeekAgo = new Date();
   oneWeekAgo.setDate(currentDate.getDate() - 7)
-  var ds = []
-  for(var date of [oneWeekAgo, currentDate]){
-    ds.push(formatDate(date))
-  }
-
-  start_date.value = ds[0]
-  end_date.value = ds[1]
-  fileDate.value = ds[1]
+  start_date.value = formatDate(oneWeekAgo)
+  end_date.value = formatDate(currentDate)
+  fileDate.value = formatDate(currentDate)
 }
 
 setDefaultDates()
 
+// creates a url query from a base url and query object
 function urlFormat(base, query){
   var q = "?"
   for(var key in query){
@@ -79,10 +78,13 @@ function DeleteClick(id){
   })
 }
 
+// Takes the numerical week (as given by genReport) and converts to a formatted
+// date string
 function weekToDate(weekNum){
   return formatDate(new Date(weekNum*weekfactor))
 }
 
+// Takes an array of expenses, and groups them by the week they occurred
 function genReport(data){
   var byweek = {}
   function groupweek(value, index, array){
@@ -98,6 +100,7 @@ function genReport(data){
   return byweek;
 }
 
+// Takes the result of genReport, and renders the report to the DOM
 function displayReport(report){
   var data = []
   for(var key in report){
@@ -131,10 +134,11 @@ function displayReport(report){
     title.text(titleTxt)
 }
 
+// Renders a data packet as a table
 function displayTable(data, columns) {
 	var report = d3.select('#allexpenses')
   report.selectAll('*').remove()
-  columns = ["Owner"].concat(columns).concat(["Edit", "Delete"])
+  columns = columns.concat(["Edit", "Delete"])
   var sum = 0
   for(var item of data){
 
@@ -174,7 +178,6 @@ function displayTable(data, columns) {
 	  })
 	  .enter()
 	  .append('td')
-      .style("overflow", "visible")
       .html(function(d){
         if(typeof d.value === "object"){
           return `<button id="${d.value.id}" type="button" class="edit" onclick="${d.column}Click('${d.value.id}')">${d.column}</button>`
@@ -195,11 +198,12 @@ function getExpenses(){
   var url = urlFormat("/expenses", formData)
   d3.json(url, function(json){
     displayReport(genReport(json))
-    displayTable(json, ['Datetime', "Amount", "Description"])
+    displayTable(json, ['Owner', 'Datetime', "Amount", "Description"])
   })
   return false;
 }
 
+// Retrieves the values from the submit/edit expense form
 function getExpenseForm(){
   var formData = {}
   formData[amount.name] = amount.value

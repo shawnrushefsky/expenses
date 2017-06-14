@@ -45,18 +45,11 @@ describe("API Methods", function(){
       })
     })
   })
-  // describe("GET /app", function(){
-  //   var options = {
-  //     url: url+"/app",
-  //     agentOptions: agentOptions
-  //   }
-  //   it("loads the app", function(done){
-  //     r.get(options, function(e,r,b){
-  //       console.log(b)
-  //       done()
-  //     })
-  //   })
-  // })
+  describe("GET /app", function(){
+    it("loads the app", function(done){
+      done()
+    })
+  })
   describe("GET /", function(){
     it("loads the home page, formatted for login", function(done){
       r.get({url: url+"/", agentOptions: agentOptions}, function(e, r, b){
@@ -76,16 +69,24 @@ describe("API Methods", function(){
       })
     })
   })
-  // describe("POST /expenses", function(){
-  //
-  // })
-  // describe("GET /expenses", function(){
-  //
-  // })
-  // describe("PUT /expenses", function(){
-  //
-  // })
-  // describe("DELETE /expenses", function(){
-  //
-  // })
+  describe("POST /expenses", function(){
+    it("submits a new expense", function(done){
+      done()
+    })
+  })
+  describe("GET /expenses", function(){
+    it("retrieves a list of expenses, either all, or in a range", function(done){
+      done()
+    })
+  })
+  describe("PUT /expenses", function(){
+    it("updates an expense", function(done){
+      done()
+    })
+  })
+  describe("DELETE /expenses", function(){
+    it("deletes an expense", function(done){
+      done()
+    })
+  })
 })
