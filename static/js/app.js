@@ -1,47 +1,47 @@
-var all_expenses = document.getElementById("all_expenses")
-var start_date = document.getElementById("start_date")
-var end_date = document.getElementById("end_date")
-var fileDate = document.getElementById("date")
-var reportButton = document.getElementById("reportbutton")
-var reportCancel = document.getElementById("reportcancel")
-var fileButton = document.getElementById("filebutton")
-var fileCancel = document.getElementById("filecancel")
-var fileInstructions = document.getElementById("fileinstructions")
-var amount = document.getElementById("amount")
-var description = document.getElementById("description")
+var all_expenses = document.getElementById("all_expenses");
+var start_date = document.getElementById("start_date");
+var end_date = document.getElementById("end_date");
+var fileDate = document.getElementById("date");
+var reportButton = document.getElementById("reportbutton");
+var reportCancel = document.getElementById("reportcancel");
+var fileButton = document.getElementById("filebutton");
+var fileCancel = document.getElementById("filecancel");
+var fileInstructions = document.getElementById("fileinstructions");
+var amount = document.getElementById("amount");
+var description = document.getElementById("description");
 
 all_expenses.checked = true;
 start_date.disabled = true;
 end_date.disabled = true;
 
 var currentReport;
-var currentData = {}
+var currentData = {};
 var editID;
-var weekfactor = (1000*60*60*24*7)
+var weekfactor = 1000*60*60*24*7;
 
 // Takes a date object, and returns a string yyyy-mm-dd, in compliance with the
 // html input.date object.
 function formatDate(date){
-  var yr = date.getFullYear()
-  var mnth = date.getMonth()+1
+  var yr = date.getFullYear();
+  var mnth = date.getMonth()+1;
   if(mnth < 10){
-    mnth = `0${mnth}`
+    mnth = `0${mnth}`;
   }
   var day = date.getDate()
   if(day < 10){
-    day = `0${day}`
+    day = `0${day}`;
   }
-  return yr+"-"+mnth+"-"+day
+  return yr+"-"+mnth+"-"+day;
 }
 
 
 function setDefaultDates(){
-  var currentDate = new Date()
+  var currentDate = new Date();
   var oneWeekAgo = new Date();
-  oneWeekAgo.setDate(currentDate.getDate() - 7)
-  start_date.value = formatDate(oneWeekAgo)
-  end_date.value = formatDate(currentDate)
-  fileDate.value = formatDate(currentDate)
+  oneWeekAgo.setDate(currentDate.getDate() - 7);
+  start_date.value = formatDate(oneWeekAgo);
+  end_date.value = formatDate(currentDate);
+  fileDate.value = formatDate(currentDate);
 }
 
 setDefaultDates()
@@ -51,20 +51,20 @@ function urlFormat(base, query){
   var q = "?"
   for(var key in query){
     if(query.hasOwnProperty(key)){
-      q += key+"="+query[key]+"&"
+      q += key+"="+query[key]+"&";
     }
   }
-  return base+q
+  return base+q;
 }
 
 function EditClick(id){
-  var d = currentData[id]
-  fileInstructions.innerText = "Edit an Expense"
-  fileDate.value = d.Datetime
-  amount.value = d.Amount
-  description.value = d.Description
-  fileButton.onclick = editExpense
-  editID = id
+  var d = currentData[id];
+  fileInstructions.innerText = "Edit an Expense";
+  fileDate.value = d.Datetime;
+  amount.value = d.Amount;
+  description.value = d.Description;
+  fileButton.onclick = editExpense;
+  editID = id;
 }
 
 function DeleteClick(id){
@@ -73,7 +73,7 @@ function DeleteClick(id){
     method: "DELETE",
     data: {id: id},
     success: function(r){
-      getExpenses()
+      getExpenses();
     }
   })
 }
@@ -81,12 +81,12 @@ function DeleteClick(id){
 // Takes the numerical week (as given by genReport) and converts to a formatted
 // date string
 function weekToDate(weekNum){
-  return formatDate(new Date(weekNum*weekfactor))
+  return formatDate(new Date(weekNum*weekfactor));
 }
 
 // Takes an array of expenses, and groups them by the week they occurred
 function genReport(data){
-  var byweek = {}
+  var byweek = {};
   function groupweek(value, index, array){
     if(value.Owner === window.myName){
       var d = new Date(value['Datetime']);
@@ -96,21 +96,21 @@ function genReport(data){
     }
 
   }
-  data.map(groupweek)
+  data.map(groupweek);
   return byweek;
 }
 
 // Takes the result of genReport, and renders the report to the DOM
 function displayReport(report){
-  var data = []
+  var data = [];
   for(var key in report){
-    data.push([Number(key), report[key]])
+    data.push([Number(key), report[key]]);
   }
-  data.sort(function(d){return d[0]})
-  var report = d3.select("#report")
-  report.selectAll('*').remove()
-  var title = report.append("h3")
-  var total = 0
+  data.sort(function(d){return d[0]});
+  var report = d3.select("#report");
+  report.selectAll('*').remove();
+  var title = report.append("h3");
+  var total = 0;
   report.selectAll('p')
     .data(data)
     .enter()
@@ -119,27 +119,27 @@ function displayReport(report){
       // console.log(d[1])
       var weekSum = 0;
       for(var item of d[1]){
-        weekSum += item.Amount
+        weekSum += item.Amount;
       }
-      total += weekSum
-      return `Week Starting ${weekToDate(d[0])}: $${weekSum}`
+      total += weekSum;
+      return `Week Starting ${weekToDate(d[0])}: $${weekSum}`;
     })
     var titleTxt
     if(!currentReport.all){
-      titleTxt = `${window.myName}'s Total (${currentReport.start} to ${currentReport.end}): $${total}`
+      titleTxt = `${window.myName}'s Total (${currentReport.start} to ${currentReport.end}): $${total}`;
     }
     else{
-      titleTxt = `${window.myName}'s Total Expenses: $${total}`
+      titleTxt = `${window.myName}'s Total Expenses: $${total}`;
     }
-    title.text(titleTxt)
+    title.text(titleTxt);
 }
 
 // Renders a data packet as a table
 function displayTable(data, columns) {
-	var report = d3.select('#allexpenses')
-  report.selectAll('*').remove()
-  columns = columns.concat(["Edit", "Delete"])
-  var sum = 0
+	var report = d3.select('#allexpenses');
+  report.selectAll('*').remove();
+  columns = columns.concat(["Edit", "Delete"]);
+  var sum = 0;
   for(var item of data){
 
     if(item.Owner === window.myName){
@@ -151,8 +151,8 @@ function displayTable(data, columns) {
   }
 
   // var total = report.append("h3").text(titleTxt)
-  var table = report.append('table').attr("class", "report")
-	var thead = table.append('thead')
+  var table = report.append('table').attr("class", "report");
+	var thead = table.append('thead');
 	var	tbody = table.append('tbody');
 
 	// append the header row
@@ -180,9 +180,9 @@ function displayTable(data, columns) {
 	  .append('td')
       .html(function(d){
         if(typeof d.value === "object"){
-          return `<button id="${d.value.id}" type="button" class="edit" onclick="${d.column}Click('${d.value.id}')">${d.column}</button>`
+          return `<button id="${d.value.id}" type="button" class="edit" onclick="${d.column}Click('${d.value.id}')">${d.column}</button>`;
         }
-        return d.value
+        return d.value;
       })
 
 
@@ -190,40 +190,41 @@ function displayTable(data, columns) {
 }
 
 function getExpenses(){
-  var formData = {}
-  formData[start_date.name] = start_date.value
-  formData[end_date.name] = end_date.value
-  formData[all_expenses.name] = all_expenses.checked
+  var formData = {};
+  formData[start_date.name] = start_date.value;
+  formData[end_date.name] = end_date.value;
+  formData[all_expenses.name] = all_expenses.checked;
   currentReport = formData
   var url = urlFormat("/expenses", formData)
   d3.json(url, function(json){
-    displayReport(genReport(json))
-    displayTable(json, ['Owner', 'Datetime', "Amount", "Description"])
+    displayReport(genReport(json));
+    displayTable(json, ['Owner', 'Datetime', "Amount", "Description"]);
   })
   return false;
 }
 
 // Retrieves the values from the submit/edit expense form
 function getExpenseForm(){
-  var formData = {}
-  formData[amount.name] = amount.value
-  formData[fileDate.name] = fileDate.value
-  formData[description.name] = description.value
-  return formData
+  var formData = {};
+  formData[amount.name] = amount.value;
+  formData[fileDate.name] = fileDate.value;
+  formData[description.name] = description.value;
+  return formData;
 }
 
 function clearExpense(){
   fileInstructions.innerText = "Submit an Expense"
   amount.value = null;
   description.value = null;
+  fileButton.onclick = submitExpense;
 }
 
 function submitExpense(){
   formData = getExpenseForm()
   $.post('/expenses', formData, function(r){
     if(r.hasOwnProperty('Owner')){
-      clearExpense()
-      getExpenses()
+      clearExpense();
+      getExpenses();
     }
   })
 }
@@ -236,7 +237,8 @@ function editExpense(){
     method: "PUT",
     data: formData,
     success: function(d){
-      getExpenses()
+      clearExpense();
+      getExpenses();
     }
   })
 
@@ -256,10 +258,10 @@ end_date.onchange = function(){
     start_date.value = end_date.value
   }
 }
-reportButton.onclick = getExpenses
+reportButton.onclick = getExpenses;
 reportCancel.onclick = function(){
-  var report = d3.select('#allexpenses')
-  report.selectAll('*').remove()
+  var report = d3.select('#allexpenses');
+  report.selectAll('*').remove();
 }
-fileButton.onclick = submitExpense
-fileCancel.onclick = clearExpense
+fileButton.onclick = submitExpense;
+fileCancel.onclick = clearExpense;
